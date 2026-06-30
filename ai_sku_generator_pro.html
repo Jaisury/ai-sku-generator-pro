@@ -1,0 +1,419 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--accent:#0F6E56;--accent-light:#E1F5EE;--accent-mid:#1D9E75;--accent-text:#085041}
+.shell{font-family:var(--font-sans);background:var(--surface-2);border:0.5px solid var(--border);border-radius:20px;overflow:hidden;display:flex;flex-direction:column}
+.navbar{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;border-bottom:0.5px solid var(--border);background:var(--surface-2)}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{width:32px;height:32px;background:var(--accent);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.brand-icon i{color:#fff;font-size:15px}
+.brand-name{font-size:13px;font-weight:500;color:var(--text-primary);letter-spacing:-0.01em}
+.brand-name span{color:var(--text-muted);font-weight:400;margin-left:4px;font-size:12px}
+.nav-right{display:flex;align-items:center;gap:6px}
+.seg{display:flex;background:var(--surface-1);border-radius:9px;padding:3px;gap:2px}
+.seg-btn{font-size:11px;font-weight:500;padding:5px 11px;border-radius:7px;border:none;cursor:pointer;color:var(--text-secondary);background:transparent;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.seg-btn.on{background:var(--surface-2);color:var(--text-primary);border:0.5px solid var(--border)}
+.seg-btn i{font-size:12px}
+.layout{display:grid;grid-template-columns:260px 1fr;min-height:580px}
+.panel{background:var(--surface-1);border-right:0.5px solid var(--border);padding:20px;display:flex;flex-direction:column;gap:16px}
+.panel-section{display:flex;flex-direction:column;gap:8px}
+.panel-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);padding-bottom:2px}
+.fld{display:flex;flex-direction:column;gap:4px}
+.fld-lbl{font-size:11px;color:var(--text-secondary);font-weight:400}
+.fld input,.fld select{font-size:12px;height:34px;padding:0 10px;border:0.5px solid var(--border);border-radius:8px;background:var(--surface-2);color:var(--text-primary);width:100%;outline:none;transition:border-color 0.15s}
+.fld input:focus,.fld select:focus{border-color:var(--accent-mid)}
+.fld input::placeholder{color:var(--text-muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.divider{height:0.5px;background:var(--border)}
+.primary-btn{width:100%;height:36px;background:var(--accent);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:background 0.15s;letter-spacing:0.01em}
+.primary-btn:hover{background:var(--accent-text)}
+.primary-btn:disabled{opacity:0.4;cursor:not-allowed}
+.primary-btn i{font-size:13px}
+.ghost-btn{width:100%;height:34px;background:transparent;border:0.5px solid var(--border);border-radius:9px;font-size:11px;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.15s}
+.ghost-btn:hover{border-color:var(--border-strong);color:var(--text-primary);background:var(--surface-2)}
+.ghost-btn i{font-size:12px}
+.drop-zone{border:1.5px dashed var(--border-strong);border-radius:12px;padding:20px 16px;text-align:center;cursor:pointer;transition:all 0.15s;background:var(--surface-2)}
+.drop-zone:hover,.drop-zone.drag{border-color:var(--accent-mid);background:var(--accent-light)}
+.drop-zone i{font-size:24px;color:var(--text-muted);display:block;margin-bottom:8px}
+.drop-zone-title{font-size:12px;font-weight:500;color:var(--text-primary)}
+.drop-zone-sub{font-size:11px;color:var(--text-muted);margin-top:3px;line-height:1.4}
+.file-loaded{background:var(--accent-light);border:0.5px solid #5DCAA5;border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;font-size:11px;color:var(--accent-text)}
+.file-loaded i{font-size:14px;color:var(--accent-mid)}
+.prog-wrap{display:flex;flex-direction:column;gap:4px}
+.prog-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:var(--accent-mid);border-radius:2px;width:0%;transition:width 0.3s}
+.prog-lbl{font-size:10px;color:var(--text-muted);text-align:right}
+.content{display:flex;flex-direction:column}
+.content-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:0.5px solid var(--border);background:var(--surface-2)}
+.tabs{display:flex;gap:2px}
+.tab{font-size:11px;font-weight:500;padding:5px 12px;border-radius:20px;border:none;cursor:pointer;color:var(--text-secondary);background:transparent;transition:all 0.15s}
+.tab.on{background:var(--text-primary);color:var(--surface-2)}
+.tab:hover:not(.on){background:var(--surface-1)}
+.action-row{display:flex;gap:6px}
+.act-btn{font-size:11px;height:30px;padding:0 11px;border:0.5px solid var(--border);border-radius:7px;background:var(--surface-2);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;gap:5px;transition:all 0.15s}
+.act-btn:hover{border-color:var(--border-strong);color:var(--text-primary)}
+.act-btn:disabled{opacity:0.3;cursor:not-allowed}
+.act-btn i{font-size:12px}
+.output{flex:1;padding:18px;overflow-y:auto}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:300px;gap:12px;color:var(--text-muted);text-align:center}
+.empty-state i{font-size:36px;opacity:0.2}
+.empty-state-title{font-size:13px;font-weight:500;color:var(--text-secondary)}
+.empty-state-sub{font-size:12px;color:var(--text-muted);line-height:1.5;max-width:240px}
+.loading-view{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:300px;gap:14px}
+.spin-lg{width:28px;height:28px;border:2.5px solid var(--border);border-top-color:var(--accent-mid);border-radius:50%;animation:rot 0.8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.loading-lbl{font-size:13px;color:var(--text-secondary)}
+.loading-sub{font-size:11px;color:var(--text-muted)}
+.cards-grid{display:flex;flex-direction:column;gap:12px}
+.result-card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color 0.15s}
+.result-card:hover{border-color:var(--border-strong)}
+.card-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:0.5px solid var(--border);background:var(--surface-1)}
+.platform-badge{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:500;padding:4px 10px;border-radius:20px}
+.b-seo{background:#E1F5EE;color:#085041}
+.b-amazon{background:#FFF8E1;color:#7B5800}
+.b-shopify{background:#E8F5E9;color:#1B5E20}
+.b-flipkart{background:#EDE7F6;color:#311B92}
+.card-actions{display:flex;gap:5px;align-items:center}
+.char-badge{font-size:10px;padding:3px 7px;border-radius:10px;font-weight:500}
+.c-ok{background:#E1F5EE;color:#085041}
+.c-warn{background:#FFF8E1;color:#7B5800}
+.c-over{background:#FFEBEE;color:#B71C1C}
+.icon-btn{width:28px;height:28px;border:0.5px solid var(--border);border-radius:7px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:12px;transition:all 0.15s}
+.icon-btn:hover{border-color:var(--border-strong);color:var(--text-primary);background:var(--surface-1)}
+.card-body{padding:14px 16px}
+.card-title{font-size:14px;font-weight:500;color:var(--text-primary);line-height:1.45;margin-bottom:5px}
+.card-attrs{font-size:12px;color:var(--text-secondary);line-height:1.4}
+.bulk-table-wrap{overflow-x:auto}
+.btable{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
+.btable th{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);padding:8px 10px;border-bottom:0.5px solid var(--border);text-align:left;background:var(--surface-1)}
+.btable td{padding:9px 10px;border-bottom:0.5px solid var(--border);color:var(--text-primary);vertical-align:top;word-break:break-word}
+.btable tr:last-child td{border-bottom:none}
+.btable tbody tr:hover td{background:var(--surface-1)}
+.sku-cell{font-weight:500;color:var(--text-secondary);font-size:10px}
+.toast-wrap{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);pointer-events:none}
+.toast{background:var(--text-primary);color:var(--surface-2);font-size:12px;padding:8px 16px;border-radius:10px;display:none;align-items:center;gap:7px;white-space:nowrap}
+.toast.show{display:flex}
+.toast i{font-size:13px}
+</style>
+
+<h2 class="sr-only">AI SKU generator — platform titles for Amazon, Shopify, and Flipkart with bulk CSV support and export</h2>
+
+<div class="shell" style="position:relative">
+
+  <nav class="navbar">
+    <div class="brand">
+      <div class="brand-icon"><i class="ti ti-tag" aria-hidden="true"></i></div>
+      <div>
+        <div class="brand-name">AI SKU generator <span>by Jayasurya Atla</span></div>
+      </div>
+    </div>
+    <div class="seg">
+      <button class="seg-btn on" id="seg-single" onclick="setMode('single')"><i class="ti ti-pencil" aria-hidden="true"></i>Single</button>
+      <button class="seg-btn" id="seg-bulk" onclick="setMode('bulk')"><i class="ti ti-table-import" aria-hidden="true"></i>Bulk CSV</button>
+    </div>
+  </nav>
+
+  <div class="layout">
+
+    <aside class="panel" id="panel-single">
+      <div class="panel-section">
+        <div class="panel-label">Product details</div>
+        <div class="fld"><div class="fld-lbl">Brand</div><input id="p-brand" type="text" placeholder="Mamaearth" /></div>
+        <div class="fld"><div class="fld-lbl">Category</div><input id="p-cat" type="text" placeholder="Face Wash" /></div>
+        <div class="two">
+          <div class="fld"><div class="fld-lbl">Color / Shade</div><input id="p-color" type="text" placeholder="Rose Gold" /></div>
+          <div class="fld"><div class="fld-lbl">Size / Volume</div><input id="p-size" type="text" placeholder="200ml" /></div>
+        </div>
+        <div class="fld"><div class="fld-lbl">Material / Ingredient</div><input id="p-mat" type="text" placeholder="Niacinamide" /></div>
+        <div class="two">
+          <div class="fld">
+            <div class="fld-lbl">Gender</div>
+            <select id="p-gender">
+              <option value="">Any</option>
+              <option>Men's</option>
+              <option>Women's</option>
+              <option>Unisex</option>
+              <option>Kids'</option>
+            </select>
+          </div>
+          <div class="fld">
+            <div class="fld-lbl">Category type</div>
+            <select id="p-type">
+              <option value="general">General</option>
+              <option value="beauty">Beauty / care</option>
+              <option value="fashion">Fashion</option>
+              <option value="tech">Tech</option>
+              <option value="health">Health</option>
+              <option value="food">Food</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <button class="primary-btn" id="gen-btn" onclick="doSingle()">
+        <i class="ti ti-sparkles" aria-hidden="true"></i> Generate SKU names
+      </button>
+    </aside>
+
+    <aside class="panel" id="panel-bulk" style="display:none">
+      <div class="panel-section">
+        <div class="panel-label">Upload CSV</div>
+        <div class="drop-zone" id="drop-zone" onclick="document.getElementById('csv-file').click()"
+          ondragover="event.preventDefault();this.classList.add('drag')"
+          ondragleave="this.classList.remove('drag')"
+          ondrop="event.preventDefault();this.classList.remove('drag');handleFiles(event.dataTransfer.files)">
+          <i class="ti ti-file-spreadsheet" aria-hidden="true"></i>
+          <div class="drop-zone-title">Drop your CSV file here</div>
+          <div class="drop-zone-sub">or click to browse<br>Columns: brand, category, color, size, material, gender</div>
+        </div>
+        <input type="file" id="csv-file" accept=".csv" style="display:none" onchange="handleFiles(this.files)" />
+        <div id="file-loaded" style="display:none" class="file-loaded"><i class="ti ti-circle-check" aria-hidden="true"></i><span id="file-name">file.csv</span></div>
+      </div>
+      <div class="divider"></div>
+      <div class="panel-section">
+        <div class="panel-label">Template</div>
+        <button class="ghost-btn" onclick="dlTemplate()"><i class="ti ti-download" aria-hidden="true"></i> Download CSV template</button>
+      </div>
+      <div class="divider"></div>
+      <button class="primary-btn" id="bulk-btn" onclick="doBulk()">
+        <i class="ti ti-sparkles" aria-hidden="true"></i> Generate all SKUs
+      </button>
+      <div id="prog-block" style="display:none" class="prog-wrap">
+        <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+        <div class="prog-lbl" id="prog-lbl">0 / 0</div>
+      </div>
+    </aside>
+
+    <div class="content">
+      <div class="content-bar">
+        <div class="tabs" id="tabs">
+          <button class="tab on" onclick="setTab('all',this)">All platforms</button>
+          <button class="tab" onclick="setTab('seo',this)">SEO</button>
+          <button class="tab" onclick="setTab('amazon',this)">Amazon</button>
+          <button class="tab" onclick="setTab('shopify',this)">Shopify</button>
+          <button class="tab" onclick="setTab('flipkart',this)">Flipkart</button>
+        </div>
+        <div class="action-row">
+          <button class="act-btn" id="btn-csv" onclick="exportCSV()" disabled><i class="ti ti-file-download" aria-hidden="true"></i>Export CSV</button>
+          <button class="act-btn" id="btn-sheets" onclick="exportSheets()" disabled><i class="ti ti-table-export" aria-hidden="true"></i>Copy for Sheets</button>
+        </div>
+      </div>
+      <div class="output" id="output">
+        <div class="empty-state">
+          <i class="ti ti-package" aria-hidden="true"></i>
+          <div class="empty-state-title">No SKUs generated yet</div>
+          <div class="empty-state-sub">Fill in the product attributes on the left and hit Generate to see your platform-ready titles.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="toast-wrap"><div class="toast" id="toast"><i class="ti ti-check" aria-hidden="true"></i><span id="toast-txt"></span></div></div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script>
+const PLATS=[
+  {id:'seo',    label:'SEO title',  cls:'b-seo',      icon:'ti-search',          limit:80},
+  {id:'amazon', label:'Amazon',     cls:'b-amazon',   icon:'ti-building-store',   limit:200},
+  {id:'shopify',label:'Shopify',    cls:'b-shopify',  icon:'ti-shopping-bag',     limit:70},
+  {id:'flipkart',label:'Flipkart',  cls:'b-flipkart', icon:'ti-shopping-cart',    limit:120},
+];
+let mode='single', tab='all', results=[], csvRows=[];
+
+function setMode(m){
+  mode=m;
+  document.getElementById('panel-single').style.display=m==='single'?'flex':'none';
+  document.getElementById('panel-bulk').style.display=m==='bulk'?'flex':'none';
+  document.getElementById('seg-single').classList.toggle('on',m==='single');
+  document.getElementById('seg-bulk').classList.toggle('on',m==='bulk');
+  reset();
+}
+
+function setTab(t,el){
+  tab=t;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  render();
+}
+
+function reset(){
+  results=[];
+  document.getElementById('output').innerHTML=`<div class="empty-state"><i class="ti ti-package" aria-hidden="true"></i><div class="empty-state-title">No SKUs generated yet</div><div class="empty-state-sub">Fill in the product attributes on the left and hit Generate to see your platform-ready titles.</div></div>`;
+  setExport(false);
+}
+
+function setExport(v){
+  document.getElementById('btn-csv').disabled=!v;
+  document.getElementById('btn-sheets').disabled=!v;
+}
+
+function toast(msg){
+  const el=document.getElementById('toast');
+  document.getElementById('toast-txt').textContent=msg;
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2400);
+}
+
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function charCls(len,lim){
+  if(len<=lim*0.85)return'c-ok';
+  if(len<=lim)return'c-warn';
+  return'c-over';
+}
+
+function buildPrompt(brand,cat,color,size,mat,gender,type){
+  return`You are a senior e-commerce catalog specialist. Generate optimised SKU names for all 4 platforms below. Return ONLY valid JSON — no markdown fences, no extra text.
+
+Product:
+Brand: ${brand||'N/A'}
+Category: ${cat||'N/A'}
+Color/Shade: ${color||'N/A'}
+Size/Volume: ${size||'N/A'}
+Material/Ingredient: ${mat||'N/A'}
+Gender: ${gender||'Not specified'}
+Category type: ${type||'general'}
+
+Return exactly this JSON:
+{"seo_title":"60-80 char SEO title","seo_attrs":"Attr summary e.g. Rose Gold | Niacinamide | 200ml","amazon_title":"Amazon title max 200 chars brand first","amazon_attrs":"3 key bullet specs","shopify_title":"Shopify title 50-70 chars","shopify_attrs":"Variant label e.g. Rose Gold / 200ml","flipkart_title":"Flipkart title","flipkart_attrs":"Flipkart attribute string"}`;
+}
+
+async function callAPI(prompt){
+  const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
+  const d=await r.json();
+  const raw=d.content.map(i=>i.text||'').join('');
+  return JSON.parse(raw.replace(/```json|```/g,'').trim());
+}
+
+function toCards(r,rowLabel){
+  return PLATS.map(p=>({platform:p.id,label:p.label,cls:p.cls,icon:p.icon,limit:p.limit,title:r[p.id+'_title']||'',attrs:r[p.id+'_attrs']||'',rowLabel}));
+}
+
+function render(){
+  const out=document.getElementById('output');
+  if(!results.length){out.innerHTML=`<div class="empty-state"><i class="ti ti-package" aria-hidden="true"></i><div class="empty-state-title">No results yet</div></div>`;return;}
+  const isBulk=results.length>4;
+  if(isBulk){
+    const cols=tab==='all'?PLATS:PLATS.filter(p=>p.id===tab);
+    let h=`<div class="bulk-table-wrap"><table class="btable"><thead><tr><th style="width:110px">SKU</th>`;
+    cols.forEach(p=>{h+=`<th>${p.label} title</th><th style="width:110px">Attributes</th>`;});
+    h+=`</tr></thead><tbody>`;
+    const grp={};
+    results.forEach(c=>{if(!grp[c.rowLabel])grp[c.rowLabel]=[];grp[c.rowLabel].push(c);});
+    Object.entries(grp).forEach(([lbl,cards])=>{
+      h+=`<tr><td class="sku-cell">${esc(lbl)}</td>`;
+      cols.forEach(p=>{const c=cards.find(x=>x.platform===p.id);h+=c?`<td>${esc(c.title)}</td><td style="color:var(--text-secondary)">${esc(c.attrs)}</td>`:'<td>—</td><td>—</td>';});
+      h+=`</tr>`;
+    });
+    h+=`</tbody></table></div>`;
+    out.innerHTML=h;
+  } else {
+    const vis=tab==='all'?results:results.filter(c=>c.platform===tab);
+    let h='<div class="cards-grid">';
+    vis.forEach(c=>{
+      const len=c.title.length;
+      const cc=charCls(len,c.limit);
+      h+=`<div class="result-card">
+        <div class="card-head">
+          <span class="platform-badge ${c.cls}"><i class="ti ${c.icon}" aria-hidden="true" style="font-size:12px"></i>${c.label}</span>
+          <div class="card-actions">
+            <span class="char-badge ${cc}">${len}/${c.limit}</span>
+            <button class="icon-btn" aria-label="Copy title" onclick="copyCard(this,'${esc(c.title)}','${esc(c.attrs)}')"><i class="ti ti-copy" aria-hidden="true"></i></button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">${esc(c.title)}</div>
+          <div class="card-attrs">${esc(c.attrs)}</div>
+        </div>
+      </div>`;
+    });
+    h+='</div>';
+    out.innerHTML=h;
+  }
+}
+
+function copyCard(btn,title,attrs){
+  navigator.clipboard.writeText(title+'\n'+attrs).then(()=>{
+    btn.innerHTML='<i class="ti ti-check" aria-hidden="true"></i>';
+    setTimeout(()=>{btn.innerHTML='<i class="ti ti-copy" aria-hidden="true"></i>';},1800);
+    toast('Copied to clipboard');
+  });
+}
+
+async function doSingle(){
+  const brand=document.getElementById('p-brand').value.trim();
+  const cat=document.getElementById('p-cat').value.trim();
+  if(!brand&&!cat){document.getElementById('p-brand').focus();return;}
+  const btn=document.getElementById('gen-btn');
+  btn.disabled=true;btn.innerHTML='<div style="width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:rot 0.8s linear infinite"></div> Generating…';
+  document.getElementById('output').innerHTML='<div class="loading-view"><div class="spin-lg"></div><div class="loading-lbl">Building your SKU titles…</div><div class="loading-sub">Optimising for all 4 platforms</div></div>';
+  try{
+    const r=await callAPI(buildPrompt(brand,cat,document.getElementById('p-color').value.trim(),document.getElementById('p-size').value.trim(),document.getElementById('p-mat').value.trim(),document.getElementById('p-gender').value,document.getElementById('p-type').value));
+    results=toCards(r,`${brand} ${cat}`.trim());
+    render();setExport(true);
+  }catch(e){document.getElementById('output').innerHTML='<div class="empty-state"><i class="ti ti-alert-circle" aria-hidden="true"></i><div class="empty-state-title">Something went wrong</div><div class="empty-state-sub">Check your inputs and try again.</div></div>';}
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-sparkles" aria-hidden="true"></i> Generate SKU names';
+}
+
+function handleFiles(files){
+  const f=files[0];if(!f)return;
+  Papa.parse(f,{header:true,skipEmptyLines:true,complete(res){
+    csvRows=res.data;
+    document.getElementById('file-loaded').style.display='flex';
+    document.getElementById('file-name').textContent=`${f.name} · ${csvRows.length} rows`;
+  }});
+}
+
+async function doBulk(){
+  if(!csvRows.length){toast('Upload a CSV file first');return;}
+  const btn=document.getElementById('bulk-btn');
+  btn.disabled=true;btn.innerHTML='<div style="width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:rot 0.8s linear infinite"></div> Processing…';
+  const prog=document.getElementById('prog-block');prog.style.display='flex';
+  results=[];
+  document.getElementById('output').innerHTML='<div class="loading-view"><div class="spin-lg"></div><div class="loading-lbl">Processing your CSV…</div><div class="loading-sub">Rows queued: '+csvRows.length+'</div></div>';
+  for(let i=0;i<csvRows.length;i++){
+    const row=csvRows[i];
+    const g=k=>row[k]||row[k.charAt(0).toUpperCase()+k.slice(1)]||'';
+    const pct=Math.round((i/csvRows.length)*100);
+    document.getElementById('prog-fill').style.width=pct+'%';
+    document.getElementById('prog-lbl').textContent=`${i+1} of ${csvRows.length}`;
+    try{
+      const r=await callAPI(buildPrompt(g('brand'),g('category'),g('color')||g('shade'),g('size')||g('volume'),g('material')||g('ingredient'),g('gender'),g('category_type')||'general'));
+      results.push(...toCards(r,`${g('brand')} ${g('category')}`.trim()||`Row ${i+1}`));
+    }catch(e){}
+  }
+  document.getElementById('prog-fill').style.width='100%';
+  document.getElementById('prog-lbl').textContent=`Done — ${csvRows.length} SKUs`;
+  render();setExport(true);
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-sparkles" aria-hidden="true"></i> Generate all SKUs';
+}
+
+function exportCSV(){
+  if(!results.length)return;
+  const grp={};results.forEach(c=>{if(!grp[c.rowLabel])grp[c.rowLabel]=[];grp[c.rowLabel].push(c);});
+  const hdr=['SKU / Product',...PLATS.flatMap(p=>[p.label+' title',p.label+' attrs'])];
+  const rows=[hdr,...Object.entries(grp).map(([lbl,cards])=>[lbl,...PLATS.flatMap(p=>{const c=cards.find(x=>x.platform===p.id);return[c?c.title:'',c?c.attrs:''];})])];
+  const csv=rows.map(r=>r.map(v=>'"'+(v||'').replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv'})),download:'sku_names.csv'});
+  a.click();URL.revokeObjectURL(a.href);
+  toast('CSV downloaded');
+}
+
+function exportSheets(){
+  if(!results.length)return;
+  const grp={};results.forEach(c=>{if(!grp[c.rowLabel])grp[c.rowLabel]=[];grp[c.rowLabel].push(c);});
+  const hdr=['SKU / Product',...PLATS.flatMap(p=>[p.label+' title',p.label+' attrs'])];
+  const rows=[hdr,...Object.entries(grp).map(([lbl,cards])=>[lbl,...PLATS.flatMap(p=>{const c=cards.find(x=>x.platform===p.id);return[c?c.title:'',c?c.attrs:''];})])];
+  navigator.clipboard.writeText(rows.map(r=>r.join('\t')).join('\n')).then(()=>toast('Copied — paste into Google Sheets'));
+}
+
+function dlTemplate(){
+  const csv=`brand,category,color,size,material,gender,category_type\nMamaearth,Face Wash,Rose Gold,200ml,Niacinamide,Women's,beauty\nNike,Running Shoes,Midnight Black,UK 10,Breathable Mesh,Men's,general\nBoAt,Wireless Earbuds,Raven Black,One Size,ABS Plastic,Unisex,tech\n`;
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv'})),download:'sku_template.csv'});
+  a.click();URL.revokeObjectURL(a.href);
+  toast('Template downloaded');
+}
+</script>
